@@ -8,8 +8,6 @@
   <title>HTML</title>
   
   <!-- HTML -->
-  
-
   <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -26,25 +24,35 @@
     const main = gElId('main');
     const nav = gElId('navTool');
     
-    initial.innerHTML = 
-    `<b>WELCOME</b>`+
-    `<p>Current API</p>`+
-    `<input id="showAPI" placeHolder="Current API">`+
-    `<p>API</p>`+
-    `<input id="api" placeHolder="API HERE">`+
-    `<button id="apiStore" onclick="saveAPI()">Install</button>`
-    ;
   </script>
   <script>
-    function saveAPI(){
-      let apiVal = gElId('api').value;
-      console.log(apiVal);
-      setLocal(api,apiVal);
-      console.log(getLocal(api));
-      let cur = gElId('showAPI');
-      let val = getLocal(api);
-      console.log(val);
-      cur.value = val;
+    window.addEventListener('DOMContentLoaded',function(){
+      loadInit();
+     //loadHead();
+     //loadMain();
+     //loadNav();
+    });
+
+    function loadInit(){
+        
+      init.innerHTML = 
+      `<div>`+
+      `<h1>Welcome to PWA Switch</h1>`+
+      `<p>enter API link for Installation</p>`+
+      `<span>Current API</span>`+
+      `<input id="cAPI" placeholder="no API currently" disabled>`+
+      `<span>NEW API</span>`+
+      `<input id="API" placeholder="API put here">`+
+      `<button id="install" onclick="install()">install</button>`+
+      `</div>`
+      let capi = getLocal(api);
+    };
+
+  </script>
+  <script>
+    function install(){
+      
+
     }
   </script>
 </body>
