@@ -1,59 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>HTML</title>
-  
-  <!-- HTML -->
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <meta name="viewport"content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 </head>
+<style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
 <body>
-  <div id="initial"></div>
-  <div id="head"></div>
-  <div id="main"></div>
-  <div id="navTool"></div>
-  <!-- Project -->
-  <script src="main.js"></script>
-  <script>
-    const init = gElId('initial');
-    const head = gElId('head')
-    const main = gElId('main');
-    const nav = gElId('navTool');
-    
-  </script>
-  <script>
-    window.addEventListener('DOMContentLoaded',function(){
-      loadInit();
-     //loadHead();
-     //loadMain();
-     //loadNav();
+<div >
+  <h1>Testing</h1>
+  <input placeholder="input" id='input'>
+  <button id='send' onclick="getData()">GetData</button>
+</div>
+<div id='tableDiv'></div> 
+
+
+<script>
+const fetchRes = async (url) => { //FetchRequest
+				const response = await fetch(url);
+				return response.json();
+				}; 
+
+const fetchUrl = 'https://script.google.com/macros/s/AKfycby71BKE_kvcGTku1bMMToA8IIgwnPpJLoOkf7rAO0GscuuDxw_ehm9NQATbG_XYv-a1/exec?dom='; 
+</script>
+
+<script>
+function getData(){
+  let td = document.getElementById('tableDiv');
+  let key = document.getElementById('input').value;
+  let url =fetchUrl+key;
+      
+    fetchRes(url).then(res=>{
+      let shtNameList = Object.keys(res); //get Sheet Name List
+      console.log(Object.entries(res));
+        shtNameList.forEach(function(shtName){ //create Table for each sheet
+          let tableContainer = document.createElement('div');
+          tableContainer.id = "tableContainer";
+          
+          tableContainer.innerHTML=                      //先將 res 拮取 sheet名稱作分類                           
+          `<h1>${shtName}</h1>`+                          //生成基礎tableView及獨有ID       
+            `<table id="table${shtName}">`+              //再拮取itemList
+              `<tr id="header${shtName}">`+             //最後將DATA OBJ 壓成ARR 結取第二項輸出 e.g. row[1]
+              `</tr>`+ 
+            `</table>`;
+            td.appendChild(tableContainer);      
+            
+          let itemList = Object.keys(res[shtName][0]);
+          let itemLeng = itemList.length; //get sheet Data row length
+          let table = document.getElementById(`table${shtName}`);
+          let itemRow = document.getElementById(`header${shtName}`);
+          
+
+          itemList.forEach(function(header){ //item Row generator
+              let item = document.createElement('th');
+                item.innerHTML = header;
+                itemRow.appendChild(item);
+              });
+          
+          res[shtName].forEach(function(row){
+              let arr = Object.entries(row);
+              //console.log(arr)
+              let tr = document.createElement('tr');
+                arr.forEach(function(dat){
+                  let td = document.createElement('td');
+                  td.textContent = dat[1];
+                  tr.appendChild(td);
+                })
+              
+              table.appendChild(tr);
+          })
+        });
     });
 
-    function loadInit(){
-        
-      init.innerHTML = 
-      `<div>`+
-      `<h1>Welcome to PWA Switch</h1>`+
-      `<p>enter API link for Installation</p>`+
-      `<span>Current API</span>`+
-      `<input id="cAPI" placeholder="no API currently" disabled>`+
-      `<span>NEW API</span>`+
-      `<input id="API" placeholder="API put here">`+
-      `<button id="install" onclick="install()">install</button>`+
-      `</div>`
-      let capi = getLocal(api);
-    };
-
-  </script>
-  <script>
-    function install(){
-      
-
-    }
-  </script>
+    
+};
+</script>
 </body>
 </html>
+
