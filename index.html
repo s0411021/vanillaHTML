@@ -23,9 +23,9 @@
   </style>
 <body>
 <div >
-  <h1>Testing</h1>
-  <input placeholder="input" id='input'>
-  <button id='send' onclick="getData()">GetData</button>
+  <h1>DriveBase讀取器</h1>
+  <input placeholder="資料表名" id='input'>
+  <button id='send' onclick="getData()">讀取資料表</button>
 </div>
 <div id='tableDiv'></div> 
 
@@ -41,11 +41,19 @@ const fetchUrl = 'https://script.google.com/macros/s/AKfycby71BKE_kvcGTku1bMMToA
 
 <script>
 function getData(){
+
   let td = document.getElementById('tableDiv');
+  let tdEmpty =()=>{return td.innerHTML=""};
   let key = document.getElementById('input').value;
   let url =fetchUrl+key;
-      
+  tdEmpty();
+  td.innerHTML="資料表搜尋中.....";
+
+
     fetchRes(url).then(res=>{
+      
+      alert("資料表已找到，現正讀取")
+      tdEmpty();
       let shtNameList = Object.keys(res); //get Sheet Name List
       console.log(Object.entries(res));
         shtNameList.forEach(function(shtName){ //create Table for each sheet
